@@ -21,6 +21,7 @@ public class ApiController {
     //"getApi" This method retrieves a list of all APIs or searches for APIs containing a specific word in their name.
     //If a "name" parameter is provided, it calls getContainingQuote from ApiRepository to search for APIs by name.
     //If no "name" parameter is provided, it calls findAll from JpaRepository to retrieve all APIs.
+    //Test request GET http://localhost:8080/api (to find all) + ?name= (find api via specific name)
     @GetMapping
     public ResponseEntity<List<Api>> getApi(@RequestParam("name") Optional<String> searchParam) {
         List<Api> apis = searchParam.map(param -> apiRepository.getContainingQuote(param))
@@ -31,6 +32,7 @@ public class ApiController {
 
     //"readApi" This method retrieves a specific API by its ID.
     //It uses findById from JpaRepository to find the API by ID.
+    //Test request GET http://localhost:8080/api/{apiID} (find api via specific id)
     @GetMapping("/{apiID}")
     public ResponseEntity<String> readApi(@PathVariable("apiID") Long id) {
         return apiRepository.findById(id)
@@ -40,16 +42,16 @@ public class ApiController {
 
     //"addApi" This method adds a new API.
     //It creates a new Api object, sets its name, and saves it using save from JpaRepository.
+    //Test request POST http://localhost:8080/api (adds new api)
     @PostMapping
-    public ResponseEntity<Api> addApi(@RequestBody String api) {
-        Api a = new Api();
-        a.setName(api);
-        Api savedApi = apiRepository.save(a);
+    public ResponseEntity<Api> addApi(@RequestBody Api api) {
+        Api savedApi = apiRepository.save(api);
         return new ResponseEntity<>(savedApi, HttpStatus.CREATED);
     }
 
     //"updateApi" This method updates an existing API.
     //It retrieves the existing API by ID, updates its fields, and saves the changes.
+    //Test request PUT http://localhost:8080/api/{apiID} (allow to change exising api)
     @PutMapping("/{apiID}")
     public ResponseEntity<Api> updateApi(@PathVariable("apiID") Long id, @RequestBody Api newApi) {
         Optional<Api> optionalApi = apiRepository.findById(id);
@@ -68,6 +70,7 @@ public class ApiController {
 
     //"deleteApi" This method deletes an API by its ID.
     //It checks if the API exists by ID and then deletes it using deleteById.
+    //Test request DELETE http://localhost:8080/api/{apiID} (removes exising api)
     @DeleteMapping("/{apiID}")
     public ResponseEntity<Void> deleteApi(@PathVariable("apiID") Long id) {
         if (apiRepository.existsById(id)) {
