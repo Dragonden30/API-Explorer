@@ -3,7 +3,6 @@ package ua.APIexplorer.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.Id;
 
 @Entity
 @Getter
@@ -12,7 +11,6 @@ import org.springframework.data.annotation.Id;
 public class Api {
 
     @jakarta.persistence.Id
-    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "apiID")
     private Long id;
